@@ -1,0 +1,65 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Toddy\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Toddy\UI\Http\Controller\:
+        resource: '../src/UI/Http/Controller'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    TaskRepositoryInterface:
+        class: Toddy\Infrastructure\Persistence\Doctrine\TaskRepository
+    UserRepositoryInterface:
+        class: Toddy\Infrastructure\Persistence\Doctrine\UserRepository
+
+    Toddy\Application\UseCases\CreateUser\CreateUserHandler:
+        lazy: true
+        tags:
+            - { name: command_handler, handles: Toddy\Application\UseCases\CreateUser\CreateUserCommand }
+
+    Toddy\Application\UseCases\CreateTask\CreateTaskHandler:
+        lazy: true
+        tags:
+            - { name: command_handler, handles: Toddy\Application\UseCases\CreateTask\CreateTaskCommand }
+
+    Toddy\Application\UseCases\CompleteTask\CompleteTaskHandler:
+        lazy: true
+        tags:
+            - { name: command_handler, handles: Toddy\Application\UseCases\CompleteTask\CompleteTaskCommand }
+
+    Toddy\Application\UseCases\RescheduleTask\RescheduleTaskHandler:
+        lazy: true
+        tags:
+            - { name: command_handler, handles: Toddy\Application\UseCases\RescheduleTask\RescheduleTaskCommand }
+
+    Toddy\Infrastructure\Persistence\Doctrine\EventListener\DomainEventCollector:
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber, connection: default, priority: 100}
+
+    Toddy\Infrastructure\Debug\TraceEventsListener:
+        autowire: true
+        lazy: true
+        tags:
+            - { name: event_subscriber, , register_public_methods: true}
+
+    Toddy\Infrastructure\CommandBus\ValidationMiddleware:
+        autowire: true
+        public: false
+        tags:
+            - { name: command_bus_middleware }
+
+    Toddy\UI\Http\Listener\ExceptionsListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

@@ -1,0 +1,30 @@
+parameters:
+    env(DATABASE_URL): ''
+
+doctrine:
+
+    dbal:
+        # configure these for your database server
+        driver: 'pdo_pgsql'
+        server_version: '9.6'
+        charset: utf8
+        default_table_options:
+            charset: utf8
+            collate: utf8_unicode_ci
+        url: 'pgsql://%env(resolve:DB_USER)%:%env(resolve:DB_PASS)%@%env(resolve:DB_HOST)%:%env(resolve:DB_PORT)%/%env(resolve:DB_NAME)%'
+        types:
+            task_id: \Toddy\Infrastructure\Persistence\Doctrine\Type\TaskIdType
+            user_id: \Toddy\Infrastructure\Persistence\Doctrine\Type\UserIdType
+
+    orm:
+        default_repository_class: Doctrine\ORM\EntityRepository
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+        mappings:
+            Toddy:
+                is_bundle: false
+                type: yml
+                dir: '%kernel.project_dir%/src/Infrastructure/Persistence/Doctrine/ORM'
+                prefix: 'Toddy\Domain'
+                alias: Toddy

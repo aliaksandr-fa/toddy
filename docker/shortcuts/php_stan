@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker run --rm -v "$PWD":/var/www/toddy.localhost phpstan/phpstan:0.11 \
+ analyse -l 6 /var/www/toddy.localhost/src

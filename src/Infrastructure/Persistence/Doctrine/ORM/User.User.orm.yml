@@ -1,0 +1,13 @@
+Toddy\Domain\User\User:
+    type: entity
+    table: users
+    id:
+        id:
+            type: user_id
+            generator:
+                strategy: NONE
+    fields:
+        username:
+            unique: true
+            type: string
+            length: 100

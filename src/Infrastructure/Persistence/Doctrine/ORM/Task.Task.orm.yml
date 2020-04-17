@@ -1,0 +1,28 @@
+Toddy\Domain\Task\Task:
+    type: entity
+    table: tasks
+    id:
+        id:
+            type: task_id
+            generator:
+                strategy: NONE
+    fields:
+        title:
+            type: string
+            length: 255
+        dueDate:
+            type: datetime
+            nullable: true
+        createdAt:
+            type: datetime
+            nullable: false
+        completedAt:
+            type: datetime
+            nullable: true
+
+    manyToOne:
+        owner:
+            targetEntity: \Toddy\Domain\User\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id

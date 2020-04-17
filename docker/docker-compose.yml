@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+
+    frontend:
+        build: nginx
+        image: ${REGISTRY_URL}${REPOSITORY_NAME}:${PROJECT_NAME}__frontend--latest
+        depends_on:
+            - php
+        ports:
+            - 80:80
+
+    php:
+        image: ${REGISTRY_URL}${REPOSITORY_NAME}:${PROJECT_NAME}__php--latest
+        build:
+            context: './../'
+            dockerfile: 'docker/php/Dockerfile'
+        working_dir: /var/www/${HOST}

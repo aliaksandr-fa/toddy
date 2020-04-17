@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+
+    frontend:
+        image: ${REGISTRY_URL}${REPOSITORY_NAME}:${PROJECT_NAME}__frontend--latest
+        build: nginx
+        environment:
+            - HOST
+            - HTTPS_METHOD
+            - VIRTUAL_HOST
+            - VIRTUAL_PORT
+        volumes:
+            - ./nginx/html:/var/www/${HOST}
+
+    php:
+        image: ${REGISTRY_URL}${REPOSITORY_NAME}:${PROJECT_NAME}__php--latest
+        build:
+            context: './../'
+            dockerfile: 'docker/php/Dockerfile'
+        volumes:
+            - ./../:/var/www/${HOST}
+            - ./php/config/php.ini:/usr/local/etc/php/php.ini
+            - ./php/config/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+        tty: true
+        environment:
+            - PHP_IDE_CONFIG=serverName=toddy
+
+    database:
+        image: postgres:9.6
+        environment:
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_DB=${DB_NAME}
+            - POSTGRES_PASSWORD=${DB_PASS}
+            - PGPASSWORD=${DB_PASS}
+        volumes:
+            - dbdata:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        restart: unless-stopped
+
+volumes:
+    sharedfiles:
+        driver: local
+    dbdata:
+        driver: local
