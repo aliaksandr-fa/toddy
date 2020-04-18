@@ -4,6 +4,7 @@ namespace Toddy\UI\Http\Listener;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Toddy\Domain\Shared\DomainException;
 use Toddy\Infrastructure\CommandBus\ValidationException;
 
 
@@ -20,6 +21,16 @@ class ExceptionsListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
+
+        if ($exception instanceof DomainException) {
+
+            $response = new JsonResponse([
+                'errors' => $exception->getMessage()
+            ], 409);
+
+            $event->setResponse($response);
+            return;
+        }
 
         if ($exception instanceof ValidationException) {
 
