@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+cat resources/apidoc/api_header.md > resources/apidoc/api_documentation.md
+for file in $( ls resources/apidoc | sed 's/api_documentation.md//g' | sed 's/api_header.md//g'); do
+    cat resources/apidoc/$file >> resources/apidoc/api_documentation.md
+    printf "\r\n" >> resources/apidoc/api_documentation.md
+done
+
+docker run --rm -v "$PWD":/docs humangeo/aglio \
+    --theme-template triple --theme-variables slate \
+    -i resources/apidoc/api_documentation.md \
+    -o docker/nginx/html/api_documentation.html

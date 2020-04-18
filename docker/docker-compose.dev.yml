@@ -11,7 +11,7 @@ services:
             - VIRTUAL_HOST
             - VIRTUAL_PORT
         volumes:
-            - ./nginx/html:/var/www/${HOST}
+            - ./nginx/html:/var/www/${HOST}/public
 
     php:
         image: ${REGISTRY_URL}${REPOSITORY_NAME}:${PROJECT_NAME}__php--latest
