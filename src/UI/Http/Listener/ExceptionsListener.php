@@ -25,7 +25,7 @@ class ExceptionsListener
         if ($exception instanceof DomainException) {
 
             $response = new JsonResponse([
-                'errors' => $exception->getMessage()
+                'errors' => [$exception->getMessage()]
             ], 409);
 
             $event->setResponse($response);
@@ -35,7 +35,7 @@ class ExceptionsListener
         if ($exception instanceof ValidationException) {
 
             $response = new JsonResponse([
-                'errors' => $exception->getMessages()
+                'errors' => $exception->flatten()
             ], 400);
 
             $event->setResponse($response);
@@ -51,6 +51,5 @@ class ExceptionsListener
             $event->setResponse($response);
             return;
         }
-
     }
 }

@@ -35,4 +35,21 @@ class ValidationException extends \RuntimeException
     {
         return $this->messages;
     }
+
+    /**
+     * Converts ['property' => 'error'] to flat array
+     * of errors: ['property: error']
+     *
+     * @return string[]
+     */
+    public function flatten(): array
+    {
+        $errors = [];
+
+        foreach ($this->getMessages() as $property => $message) {
+            $errors[] = sprintf("%s: %s", $property, $message);
+        }
+
+        return $errors;
+    }
 }
