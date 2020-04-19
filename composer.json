@@ -19,6 +19,11 @@
         "webmozart/assert": "^1.5"
     },
     "require-dev": {
+        "behat/behat": "^3.6",
+        "behat/mink": "^1.8",
+        "behat/mink-browserkit-driver": "^1.3",
+        "behat/symfony2-extension": "^2.1",
+        "behatch/contexts": "^3.3",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "phpstan/phpstan": "^0.12.18",
         "symfony/test-pack": "^1.0"

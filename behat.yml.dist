@@ -1,6 +1,8 @@
 default:
     suites:
         task:
+            paths:
+                - features/task
             contexts:
                 - TaskContext:
                       kernel: '@kernel'
