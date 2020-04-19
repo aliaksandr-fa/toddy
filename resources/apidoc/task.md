@@ -5,7 +5,7 @@
 ### List tasks [GET /tasks?user_id={user_id}&due_date={due_date}]
 
 + Parameters
-    + user_id: `0b01f518-3092-434a-8521-8f7496edf0b0` (uuid, optional) - Show tasks for specific user.
+    + user_id: `0b01f518-3092-434a-8521-8f7496edf0b0` (uuid, required) - Show tasks for specific user.
     + due_date: `2020-04-16` (string, optional) - Show tasks scheduled for specific date.
 
 + Response 200 (application/json)
